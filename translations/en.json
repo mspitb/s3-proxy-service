@@ -1,0 +1,12 @@
+{
+  "errors": {
+    "generic": {
+      "unknown_error": "Unknown error occurred during execution of your request."
+    },
+    "minio": {
+      "connection_error": "There is a problem connect to minio instance.",
+      "incorrect_bucket_name": "Incorrect value provided for bucket name. Please, verify minio bucket name rules.",
+      "incorrect_object_name": "Incorrect value provided for object name. Please, verify minio bucket name rules."
+    }
+  }
+}

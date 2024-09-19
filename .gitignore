@@ -1,0 +1,11 @@
+.venv
+.idea
+*.iml
+*.lock
+.pytest_cache
+dist
+build
+.dist
+*.egg-info
+.__pycache__
+.DS_Store

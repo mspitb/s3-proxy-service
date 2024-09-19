@@ -1,0 +1,10 @@
+{
+  "errors": {
+    "generic": {
+      "unknown_error": "Unknown error occurred during execution of your request."
+    },
+    "minio": {
+      "connection_error": "Hay un problema con minio servicio."
+    }
+  }
+}
