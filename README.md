@@ -48,8 +48,8 @@ Run MinIO locally using Docker following instruction:
 
 ### Explanation of .env Variables:
 - MINIO_HOST: The host and port where your MinIO instance is running.
-- MINIO_ACCESS_KEY: The access key for MinIO authentication.
-- MINIO_SECRET_KEY: The secret key for MinIO authentication.
+- MINIO_ACCESS_KEY: The access key for MinIO authentication (take from minio UI).
+- MINIO_SECRET_KEY: The secret key for MinIO authentication (take from minio UI).
 - MAX_UPLOAD_FILE_SIZE_MB: The maximum file size allowed for uploads.
 - CREATE_BUCKET_ON_FILE_UPLOAD: If set to True, the service will create a bucket automatically if it does not exist when
 uploading a file.
@@ -57,12 +57,22 @@ uploading a file.
 ## Running the Application
 
 ### Run server:
+MacOS:
 ```bash
 PROFILE=dev uvicorn main:app --reload
 ```
 or
 ```bash
 PROFILE=dev python main.py
+```
+
+Windows:
+```commandline
+$env:PROFILE="dev"; uvicorn main:app --reload
+```
+or
+```commandline
+$env:PROFILE="dev"; python main.py
 ```
 
 This will start the FastAPI application. You can access the API documentation via:

@@ -16,13 +16,7 @@ Quick guide to building and running a MinIO instance using Docker.
    ```
 3. ### Run the container:
    ``` bash
-   docker run -d \
-   -p 9000:9000 \
-   -p 9001:9001 \
-   --name minio \
-   --env-file .env \
-   -v ~/minio/data:/data \
-   minio-instance
+   docker run -d -p 9000:9000 -p 9001:9001 --name minio --env-file .env -v ~/minio/data:/data minio-instance
    ```
    - Ports 9000 and 9001 are for MinIO API and console.
    - Data is stored in ~/minio/data.
