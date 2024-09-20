@@ -7,7 +7,6 @@ from fastapi import UploadFile, File, Form, HTTPException
 from pydantic import ValidationError
 from typing_extensions import Annotated
 
-from src.core.common.singleton import Singleton
 from src.core.exceptions.exception import S3ProxyServiceException
 from src.models.download.download_request import DownloadRequest
 from src.models.upload.upload_request import UploadRequest
@@ -15,7 +14,7 @@ from src.models.upload.upload_result import UploadResult
 from src.service.s3_service import S3Service
 
 
-class S3APIService(metaclass=Singleton):
+class S3APIService:
 
     def __init__(self):
         self.logger = logging.getLogger(self.__class__.__name__)
@@ -30,15 +29,14 @@ class S3APIService(metaclass=Singleton):
         """
         return self.s3_service.upload_file(upload_request)
 
-    def download_file_from_bucket(self, bucket_name, object_name) -> bytes:
+    def download_file_from_bucket(self, download_request: DownloadRequest) -> bytes:
         """
         Download file from minio s3 bucket
-        :param bucket_name: minio bucket name
-        :param object_name: minio object name
+        :param download_request: info about bucket/object names
         :return: file bytes
         """
-        return self.s3_service.download_file(bucket_name=bucket_name,
-                                             object_name=object_name)
+        return self.s3_service.download_file(bucket_name=download_request.bucket_name,
+                                             object_name=download_request.object_name)
 
 
 router = APIRouter(prefix='/api',
@@ -99,7 +97,7 @@ async def download_file_from_bucket(bucket_name: Annotated[Union[Optional[str]],
     )
     try:
         download_request = DownloadRequest(bucket_name=bucket_name, object_name=object_name)
-        file_bytes = s3_api_service.download_file_from_bucket(bucket_name=bucket_name, object_name=object_name)
+        file_bytes = s3_api_service.download_file_from_bucket(download_request=download_request)
         return Response(content=file_bytes)
     except ValidationError as e:
         raise HTTPException(status_code=400, detail=str(e))

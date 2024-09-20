@@ -1,16 +1,15 @@
 import logging
 import os
 
-from dotenv import load_dotenv
 from minio import Minio
-from src.core.common.singleton import Singleton
-from src.models.upload.upload_result import UploadResult
-from src.models.upload.upload_request import UploadRequest
-from src.core.exceptions.exception import S3ProxyServiceException
 from urllib3.exceptions import HTTPError
 
+from src.core.exceptions.exception import S3ProxyServiceException
+from src.models.upload.upload_request import UploadRequest
+from src.models.upload.upload_result import UploadResult
 
-class S3Service(metaclass=Singleton):
+
+class S3Service:
     def __init__(self):
         self.logger = logging.getLogger(self.__class__.__name__)
         self.client = Minio(endpoint=os.getenv("MINIO_HOST"),
