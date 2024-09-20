@@ -1,14 +1,14 @@
 import os
 import json
-import sys
-
 from src.core.common.singleton import Singleton
+from pathlib import Path
 
 
 class TranslationManager(metaclass=Singleton):
     def __init__(self, default_language="en"):
         self.language = os.getenv("LANGUAGE", default_language)
-        self.translations_path = os.path.join(sys.path[0], 'translations', f'{self.language}.json')
+        project_dir = [p for p in Path(__file__).parents if p.parts[-1] == 's3-proxy-service'][0]
+        self.translations_path = os.path.join(project_dir, 'translations', f'{self.language}.json')
         self.translations = self.load_translations()
 
     def load_translations(self):

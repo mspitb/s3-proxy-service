@@ -2,6 +2,7 @@ import re
 
 from pydantic import BaseModel, Field, field_validator, ConfigDict
 
+from src.core.exceptions.error_codes import MinioError
 from src.core.exceptions.exception import S3ProxyServiceException
 
 BUCKET_NAME_PATTERN = r'(?!(^((2(5[0-5]|[0-4][0-9])|[01]?[0-9]{1,2})\.){3}(2(5[0-5]|[0-4][0-9])|[01]?[0-9]{1,2})$|^xn--|.+-s3alias$))^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$'
@@ -22,7 +23,7 @@ class BaseRequest(BaseModel):
         pattern_match = bool(re.fullmatch(BUCKET_NAME_PATTERN, bucket_name))
         contains_consecutive_dots = bool(re.search(r'[!_\-.*\'()/]{2,}', bucket_name))
         if (not pattern_match) or contains_consecutive_dots:
-            raise S3ProxyServiceException('errors.minio.incorrect_bucket_name')
+            raise S3ProxyServiceException(MinioError.INCORRECT_BUCKET_NAME)
 
         return bucket_name
 
@@ -35,6 +36,6 @@ class BaseRequest(BaseModel):
         :return: object name
         """
         if not (1 <= len(object_name) <= 1024) or (not re.fullmatch(r'^[a-zA-Z0-9!\-_.*\'()/]+$', object_name)):
-            raise S3ProxyServiceException('errors.minio.incorrect_object_name')
+            raise S3ProxyServiceException(MinioError.INCORRECT_OBJECT_NAME)
 
         return object_name

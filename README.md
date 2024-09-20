@@ -59,7 +59,10 @@ uploading a file.
 ### Run server:
 ```bash
 uvicorn main:app --reload
-
+```
+or
+```bash
+python main.py
 ```
 
 This will start the FastAPI application. You can access the API documentation via:

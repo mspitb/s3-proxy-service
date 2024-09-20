@@ -3,15 +3,15 @@ import os
 
 from dotenv import load_dotenv
 from minio import Minio
+from src.core.common.singleton import Singleton
 from src.models.upload.upload_result import UploadResult
 from src.models.upload.upload_request import UploadRequest
 from src.core.exceptions.exception import S3ProxyServiceException
 from urllib3.exceptions import HTTPError
 
 
-class S3Service:
+class S3Service(metaclass=Singleton):
     def __init__(self):
-        load_dotenv()
         self.logger = logging.getLogger(self.__class__.__name__)
         self.client = Minio(endpoint=os.getenv("MINIO_HOST"),
                             access_key=os.getenv("MINIO_ACCESS_KEY"),
@@ -40,7 +40,7 @@ class S3Service:
         self.logger.debug(f"Start uploading file {upload_request.object_name} to {upload_request.bucket_name}.")
         bucket_name = upload_request.bucket_name
         if not self.__bucket_exist(bucket_name):
-            if os.getenv('CREATE_BUCKET_ON_FILE_UPLOAD'):
+            if os.getenv('CREATE_BUCKET_ON_FILE_UPLOAD', 'False').lower() == 'true':
                 self.__create_bucket(bucket_name=bucket_name)
         try:
             self.client.put_object(bucket_name=bucket_name,
