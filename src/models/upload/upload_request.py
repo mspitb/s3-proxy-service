@@ -1,7 +1,7 @@
 from fastapi import UploadFile
 from pydantic import Field
 
-from models.base_s3_request import BaseRequest
+from src.models.base_s3_request import BaseRequest
 
 
 class UploadRequest(BaseRequest):
