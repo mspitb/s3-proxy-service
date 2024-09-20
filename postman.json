@@ -1,0 +1,153 @@
+{
+  "collection": {
+    "info": {
+      "_postman_id": "70f4843a-0280-4a38-afac-7d9f0fbbca77",
+      "name": "s3-proxy-app",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "updatedAt": "2024-09-20T16:17:53.000Z",
+      "createdAt": "2024-09-17T17:50:59.000Z",
+      "lastUpdatedBy": "4058517",
+      "uid": "4058517-70f4843a-0280-4a38-afac-7d9f0fbbca77"
+    },
+    "item": [
+      {
+        "name": "Upload file",
+        "id": "9bf442fe-ffbe-4531-89ac-341536234839",
+        "protocolProfileBehavior": {
+          "disableBodyPruning": true
+        },
+        "request": {
+          "auth": {
+            "type": "awsv4",
+            "awsv4": [
+              {
+                "key": "addAuthDataToQuery",
+                "value": false,
+                "type": "boolean"
+              },
+              {
+                "key": "service",
+                "value": "s3",
+                "type": "string"
+              },
+              {
+                "key": "secretKey",
+                "value": "wPFczJh8TMHbRQrW8PSTQixB3NUejTkwm79cDRiU",
+                "type": "string"
+              },
+              {
+                "key": "accessKey",
+                "value": "2vSLXd6ZSoNXRZBLLbLM",
+                "type": "string"
+              }
+            ]
+          },
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "formdata",
+            "formdata": [
+              {
+                "key": "object_name",
+                "value": "{{object_name}}",
+                "type": "text"
+              },
+              {
+                "key": "bucket_name",
+                "value": "{{bucket_name}}",
+                "type": "text"
+              },
+              {
+                "key": "file",
+                "type": "file",
+                "src": "/Users/srgmkhv/Downloads/sun.jpg"
+              }
+            ]
+          },
+          "url": {
+            "raw": "http://localhost:{{app_port}}/api/upload",
+            "protocol": "http",
+            "host": [
+              "localhost"
+            ],
+            "port": "{{app_port}}",
+            "path": [
+              "api",
+              "upload"
+            ]
+          }
+        },
+        "response": [],
+        "uid": "4058517-9bf442fe-ffbe-4531-89ac-341536234839"
+      },
+      {
+        "name": "Download file",
+        "id": "bad2bfc6-4229-4671-a902-8d8eaffee400",
+        "protocolProfileBehavior": {
+          "disableBodyPruning": true
+        },
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://localhost:{{app_port}}/api/download/{{bucket_name}}/{{object_name}}",
+            "protocol": "http",
+            "host": [
+              "localhost"
+            ],
+            "port": "{{app_port}}",
+            "path": [
+              "api",
+              "download",
+              "{{bucket_name}}",
+              "{{object_name}}"
+            ]
+          }
+        },
+        "response": [],
+        "uid": "4058517-bad2bfc6-4229-4671-a902-8d8eaffee400"
+      }
+    ],
+    "event": [
+      {
+        "listen": "prerequest",
+        "script": {
+          "id": "d14290c1-7e7a-47f9-901d-2b51f2654094",
+          "type": "text/javascript",
+          "packages": {},
+          "exec": [
+            ""
+          ]
+        }
+      },
+      {
+        "listen": "test",
+        "script": {
+          "id": "b789177e-dbfd-4acf-b0a0-653244a1bddf",
+          "type": "text/javascript",
+          "packages": {},
+          "exec": [
+            ""
+          ]
+        }
+      }
+    ],
+    "variable": [
+      {
+        "key": "bucket_name",
+        "value": "bucket-name",
+        "type": "string"
+      },
+      {
+        "key": "object_name",
+        "value": "object-name",
+        "type": "string"
+      },
+      {
+        "key": "app_port",
+        "value": "8000",
+        "type": "string"
+      }
+    ]
+  }
+}

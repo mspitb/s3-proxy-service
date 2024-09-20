@@ -86,5 +86,9 @@ This will start the FastAPI application. You can access the API documentation vi
 pytest
 ```
 
+### Postman
+
+You can import Postman collection from [postman.json](postman.json)
+
 </div>
 
