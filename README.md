@@ -44,7 +44,7 @@ Run MinIO locally using Docker following instruction:
 
 # Additional Settings
 
-## .env
+## .env (dev/test)
 
 ### Explanation of .env Variables:
 - MINIO_HOST: The host and port where your MinIO instance is running.
@@ -58,11 +58,11 @@ uploading a file.
 
 ### Run server:
 ```bash
-uvicorn main:app --reload
+PROFILE=dev uvicorn main:app --reload
 ```
 or
 ```bash
-python main.py
+PROFILE=dev python main.py
 ```
 
 This will start the FastAPI application. You can access the API documentation via:
