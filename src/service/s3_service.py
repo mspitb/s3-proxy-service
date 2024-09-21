@@ -10,12 +10,15 @@ from src.models.upload.upload_result import UploadResult
 
 
 class S3Service:
+    UNKNOWN_OBJECT_LENGTH: int = -1
+    DEFAULT_PART_SIZE: int = 10 * 1024 * 1024
+
     def __init__(self):
         self.logger = logging.getLogger(self.__class__.__name__)
-        self.client = Minio(endpoint=os.getenv("MINIO_HOST"),
-                            access_key=os.getenv("MINIO_ACCESS_KEY"),
-                            secret_key=os.getenv("MINIO_SECRET_KEY"),
-                            secure=False)
+        self.client: Minio = Minio(endpoint=os.getenv("MINIO_HOST"),
+                                   access_key=os.getenv("MINIO_ACCESS_KEY"),
+                                   secret_key=os.getenv("MINIO_SECRET_KEY"),
+                                   secure=False)
 
     def download_file(self, bucket_name: str, object_name: str):
         """
@@ -46,8 +49,8 @@ class S3Service:
                                    data=upload_request.file.file,
                                    object_name=upload_request.object_name,
                                    content_type=upload_request.file.content_type,
-                                   part_size=10 * 1024 * 1024,
-                                   length=-1)
+                                   part_size=self.DEFAULT_PART_SIZE,
+                                   length=self.UNKNOWN_OBJECT_LENGTH)
         except HTTPError:
             raise S3ProxyServiceException("errors.minio.connection_error")
 

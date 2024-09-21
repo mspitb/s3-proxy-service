@@ -16,6 +16,7 @@ def start_minio_container():
     """Fixture to start a MinIO container before tests and stop it afterward."""
     client = docker.from_env()
     client.images.pull("quay.io/minio/minio")
+    # TODO run docker container
 
 
 # TODO run test docker container with minio instance
