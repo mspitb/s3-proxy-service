@@ -15,10 +15,12 @@ class S3Service:
 
     def __init__(self):
         self.logger = logging.getLogger(self.__class__.__name__)
-        self.client: Minio = Minio(endpoint=os.getenv("MINIO_HOST"),
-                                   access_key=os.getenv("MINIO_ACCESS_KEY"),
-                                   secret_key=os.getenv("MINIO_SECRET_KEY"),
-                                   secure=False)
+        self.client: Minio = Minio(
+            endpoint=os.getenv("MINIO_HOST"),
+            access_key=os.getenv("MINIO_ACCESS_KEY"),
+            secret_key=os.getenv("MINIO_SECRET_KEY"),
+            secure=False,
+        )
 
     def download_file(self, bucket_name: str, object_name: str):
         """
@@ -28,8 +30,12 @@ class S3Service:
         :return: file bytes
         """
         try:
-            self.logger.debug(f"Start downloading file {object_name} from {bucket_name}.")
-            result = self.client.get_object(bucket_name=bucket_name, object_name=object_name)
+            self.logger.debug(
+                f"Start downloading file {object_name} from {bucket_name}."
+            )
+            result = self.client.get_object(
+                bucket_name=bucket_name, object_name=object_name
+            )
             return result.data
         except HTTPError:
             raise S3ProxyServiceException("errors.minio.connection_error")
@@ -39,22 +45,28 @@ class S3Service:
         Uploads file to minio s3
         :param upload_request: request with information about bucket/object
         """
-        self.logger.debug(f"Start uploading file {upload_request.object_name} to {upload_request.bucket_name}.")
+        self.logger.debug(
+            f"Start uploading file {upload_request.object_name} to {upload_request.bucket_name}."
+        )
         bucket_name = upload_request.bucket_name
         if not self.__bucket_exist(bucket_name):
-            if os.getenv('CREATE_BUCKET_ON_FILE_UPLOAD', 'False').lower() == 'true':
+            if os.getenv("CREATE_BUCKET_ON_FILE_UPLOAD", "False").lower() == "true":
                 self.__create_bucket(bucket_name=bucket_name)
         try:
-            self.client.put_object(bucket_name=bucket_name,
-                                   data=upload_request.file.file,
-                                   object_name=upload_request.object_name,
-                                   content_type=upload_request.file.content_type,
-                                   part_size=self.DEFAULT_PART_SIZE,
-                                   length=self.UNKNOWN_OBJECT_LENGTH)
+            self.client.put_object(
+                bucket_name=bucket_name,
+                data=upload_request.file.file,
+                object_name=upload_request.object_name,
+                content_type=upload_request.file.content_type,
+                part_size=self.DEFAULT_PART_SIZE,
+                length=self.UNKNOWN_OBJECT_LENGTH,
+            )
         except HTTPError:
             raise S3ProxyServiceException("errors.minio.connection_error")
 
-        return UploadResult(bucket_name=bucket_name, object_name=upload_request.object_name)
+        return UploadResult(
+            bucket_name=bucket_name, object_name=upload_request.object_name
+        )
 
     def __create_bucket(self, bucket_name: str, object_lock: bool = True):
         """
@@ -77,5 +89,5 @@ class S3Service:
             bucket_exists = self.client.bucket_exists(bucket_name=bucket_name)
             return True if bucket_exists else False
         except Exception as e:
-            self.logger.error(f'Error in S3Service: {e}')
+            self.logger.error(f"Error in S3Service: {e}")
             raise e

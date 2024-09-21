@@ -9,8 +9,8 @@ class UploadResult:
 
     def __eq__(self, o: object) -> bool:
         if isinstance(o, UploadResult):
-            return (self.bucket_name, self.object_name) == (o.bucket_name, o.object_name)
+            return (self.bucket_name, self.object_name) == (
+                o.bucket_name,
+                o.object_name,
+            )
         return False
-
-
-

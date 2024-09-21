@@ -11,7 +11,7 @@ client = TestClient(app)
 dotenv.load_dotenv("../.env.test")
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def start_minio_container():
     """Fixture to start a MinIO container before tests and stop it afterward."""
     client = docker.from_env()
